@@ -6,9 +6,9 @@ from openerp import models, api, _
 from openerp.tools import float_compare
 from openerp.exceptions import Warning as UserError
 from lxml import etree
-from StringIO import StringIO
+from io import StringIO
 import mimetypes
-from urlparse import urlparse
+from urllib.parse import urlparse
 import logging
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class BusinessDocumentImport(models.AbstractModel):
     @api.model
     def _strip_cleanup_dict(self, match_dict):
         if match_dict:
-            for key, value in match_dict.iteritems():
+            for key, value in match_dict.items():
                 if value and isinstance(value, (str, unicode)):
                     match_dict[key] = value.strip()
             if match_dict.get('country_code'):
@@ -678,7 +678,7 @@ class BusinessDocumentImport(models.AbstractModel):
                     'uom': uom,
                     'import_line': iline,
                     })
-        for exiting_dict in existing_lines_dict.itervalues():
+        for exiting_dict in existing_lines_dict.values():
             if not exiting_dict.get('import'):
                 if res['to_remove']:
                     res['to_remove'] += exiting_dict['line']
@@ -728,7 +728,7 @@ class BusinessDocumentImport(models.AbstractModel):
                     return aao.browse(speed_dict[acc_code_tmp])
             # Match when account_dict['code'] is shorter than Odoo's accounts
             # -> warns the user about this
-            for code, account_id in speed_dict.iteritems():
+            for code, account_id in speed_dict.items():
                 if code.startswith(acc_code):
                     chatter_msg.append(_(
                         "Approximate match: account %s has been matched "
@@ -835,7 +835,7 @@ class BusinessDocumentImport(models.AbstractModel):
                     xmlfiles[embeddedfile] = embeddedfiles[i+1]
                 i += 1
             logger.debug('xmlfiles=%s', xmlfiles)
-            for filename, xml_file_dict_obj in xmlfiles.iteritems():
+            for filename, xml_file_dict_obj in xmlfiles.items():
                 try:
                     xml_file_dict = xml_file_dict_obj.getObject()
                     logger.debug('xml_file_dict=%s', xml_file_dict)
@@ -849,14 +849,14 @@ class BusinessDocumentImport(models.AbstractModel):
                     continue
         except:
             pass
-        logger.info('Valid XML files found in PDF: %s', res.keys())
+        logger.info('Valid XML files found in PDF: %s', list(res.keys()))
         return res
 
     @api.model
     def post_create_or_update(self, parsed_dict, record, doc_filename=None):
         if parsed_dict.get('attachments'):
             for filename, data_base64 in\
-                    parsed_dict['attachments'].iteritems():
+                    parsed_dict['attachments'].items():
                 self.env['ir.attachment'].create({
                     'name': filename,
                     'res_id': record.id,

@@ -108,7 +108,7 @@ class SaleOrderImport(models.TransientModel):
         if not xml_files_dict:
             raise UserError(_(
                 'There are no embedded XML file in this PDF file.'))
-        for xml_filename, xml_root in xml_files_dict.iteritems():
+        for xml_filename, xml_root in xml_files_dict.items():
             logger.info('Trying to parse XML file %s', xml_filename)
             try:
                 parsed_order = self.parse_xml_order(
@@ -385,7 +385,7 @@ class SaleOrderImport(models.TransientModel):
             existing_lines, parsed_order['lines'], chatter,
             qty_precision=qty_prec, seller=False)
         # NOW, we start to write/delete/create the order lines
-        for oline, cdict in compare_res['to_update'].iteritems():
+        for oline, cdict in compare_res['to_update'].items():
             write_vals = {}
             # TODO: add support for price_source == order
             if cdict.get('qty'):

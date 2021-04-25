@@ -11,10 +11,10 @@ class TestIncotermMatch(TransactionCase):
         bdoo = self.env['business.document.import']
         incoterm_dict = {'code': 'EXW'}
         res = bdoo._match_incoterm(incoterm_dict, [])
-        self.assertEquals(res, self.env.ref('stock.incoterm_EXW'))
+        self.assertEqual(res, self.env.ref('stock.incoterm_EXW'))
         incoterm_dict = {'code': 'EXW WORKS'}
         res = bdoo._match_incoterm(incoterm_dict, [])
-        self.assertEquals(res, self.env.ref('stock.incoterm_EXW'))
+        self.assertEqual(res, self.env.ref('stock.incoterm_EXW'))
         incoterm_dict = {}
         res = bdoo._match_incoterm(incoterm_dict, [])
         self.assertFalse(res)

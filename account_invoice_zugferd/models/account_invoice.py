@@ -6,7 +6,7 @@
 from openerp import models, fields, api, tools, _
 from openerp.exceptions import Warning as UserError
 from openerp.tools import float_compare, float_is_zero, float_round
-from StringIO import StringIO
+from io import StringIO
 from lxml import etree
 from tempfile import NamedTemporaryFile
 from datetime import datetime
@@ -541,7 +541,7 @@ class AccountInvoice(models.Model):
         try:
             t = etree.parse(StringIO(xml_string))
             official_schema.assertValid(t)
-        except Exception, e:
+        except Exception as e:
             # if the validation of the XSD fails, we arrive here
             logger = logging.getLogger(__name__)
             logger.warning(

@@ -29,20 +29,20 @@ class TestBaseBusinessDocumentImport(TransactionCase):
         partner_dict = {'email': u' Agrolait@yourcompany.example.com'}
         res = bdio._match_partner(
             partner_dict, [], partner_type='customer')
-        self.assertEquals(res, self.env.ref('base.res_partner_2'))
+        self.assertEqual(res, self.env.ref('base.res_partner_2'))
         # match on domain extracted from email with warning
         partner_dict = {'email': u'alexis.delattre@total.com'}
         warn = []
         res = bdio._match_partner(partner_dict, warn, partner_type=False)
-        self.assertEquals(res, partner1)
+        self.assertEqual(res, partner1)
         self.assertTrue(warn)
         partner_dict = {'name': u'delta pc '}
         res = bdio._match_partner(
             partner_dict, [], partner_type='supplier')
-        self.assertEquals(res, self.env.ref('base.res_partner_4'))
+        self.assertEqual(res, self.env.ref('base.res_partner_4'))
         partner_dict = {'ref': u'TOTAL'}
         res = bdio._match_partner(partner_dict, [], partner_type=False)
-        self.assertEquals(res, partner1)
+        self.assertEqual(res, partner1)
 
     def test_match_shipping_partner(self):
         rpo = self.env['res.partner']
@@ -84,41 +84,41 @@ class TestBaseBusinessDocumentImport(TransactionCase):
             'address': {},
             }
         res = bdio._match_shipping_partner(shipping_dict, agrolait, [])
-        self.assertEquals(res, cpartner1)
+        self.assertEqual(res, cpartner1)
         shipping_dict['address'] = {
             'zip': '92400',
             'country_code': 'fr',
             }
         res = bdio._match_shipping_partner(shipping_dict, agrolait, [])
-        self.assertEquals(res, cpartner3)
+        self.assertEqual(res, cpartner3)
         shipping_dict['address']['zip'] = '92500'
         res = bdio._match_shipping_partner(shipping_dict, agrolait, [])
-        self.assertEquals(res, partner1)
+        self.assertEqual(res, partner1)
         shipping_dict = {
             'partner': {},
             'address': {},
             }
         res = bdio._match_shipping_partner(shipping_dict, partner1, [])
-        self.assertEquals(res, cpartner1)
+        self.assertEqual(res, cpartner1)
 
     def test_match_currency(self):
         bdio = self.env['business.document.import']
         currency_dict = {'iso': u'EUR'}
         res = bdio._match_currency(currency_dict, [])
-        self.assertEquals(res, self.env.ref('base.EUR'))
+        self.assertEqual(res, self.env.ref('base.EUR'))
         currency_dict = {'symbol': u'€'}
         res = bdio._match_currency(currency_dict, [])
-        self.assertEquals(res, self.env.ref('base.EUR'))
+        self.assertEqual(res, self.env.ref('base.EUR'))
         currency_dict = {'country_code': u'fr '}
         res = bdio._match_currency(currency_dict, [])
-        self.assertEquals(res, self.env.ref('base.EUR'))
+        self.assertEqual(res, self.env.ref('base.EUR'))
         currency_dict = {'iso_or_symbol': u'€'}
         res = bdio._match_currency(currency_dict, [])
-        self.assertEquals(res, self.env.ref('base.EUR'))
+        self.assertEqual(res, self.env.ref('base.EUR'))
         self.env.user.company_id.currency_id = self.env.ref('base.KRW')
         currency_dict = {}
         res = bdio._match_currency(currency_dict, [])
-        self.assertEquals(res, self.env.ref('base.KRW'))
+        self.assertEqual(res, self.env.ref('base.KRW'))
 
     def test_match_product(self):
         bdio = self.env['business.document.import']
@@ -135,14 +135,14 @@ class TestBaseBusinessDocumentImport(TransactionCase):
             })
         product_dict = {'code': u'A2324 '}
         res = bdio._match_product(product_dict, [])
-        self.assertEquals(res, self.env.ref('product.product_product_4b'))
+        self.assertEqual(res, self.env.ref('product.product_product_4b'))
         product_dict = {'ean13': u'9782203121102'}
         res = bdio._match_product(product_dict, [])
-        self.assertEquals(res, product1)
+        self.assertEqual(res, product1)
         product_dict = {'code': 'TEST1242'}
         res = bdio._match_product(
             product_dict, [], seller=self.env.ref('base.res_partner_2'))
-        self.assertEquals(res, product1)
+        self.assertEqual(res, product1)
         raise_test = True
         try:
             bdio._match_product(product_dict, [], seller=False)
@@ -155,20 +155,20 @@ class TestBaseBusinessDocumentImport(TransactionCase):
         bdio = self.env['business.document.import']
         uom_dict = {'unece_code': 'KGM'}
         res = bdio._match_uom(uom_dict, [])
-        self.assertEquals(res, self.env.ref('product.product_uom_kgm'))
+        self.assertEqual(res, self.env.ref('product.product_uom_kgm'))
         uom_dict = {'unece_code': 'NIU'}
         res = bdio._match_uom(uom_dict, [])
-        self.assertEquals(res, self.env.ref('product.product_uom_unit'))
+        self.assertEqual(res, self.env.ref('product.product_uom_unit'))
         uom_dict = {'name': 'day'}
         res = bdio._match_uom(uom_dict, [])
-        self.assertEquals(res, self.env.ref('product.product_uom_day'))
+        self.assertEqual(res, self.env.ref('product.product_uom_day'))
         uom_dict = {'name': ' Liter '}
         res = bdio._match_uom(uom_dict, [])
-        self.assertEquals(res, self.env.ref('product.product_uom_litre'))
+        self.assertEqual(res, self.env.ref('product.product_uom_litre'))
         uom_dict = {}
         product = self.env.ref('product.product_product_1')
         res = bdio._match_uom(uom_dict, [], product=product)
-        self.assertEquals(res, product.uom_id)
+        self.assertEqual(res, product.uom_id)
 
     def test_match_tax(self):
         # on purpose, I use a rate that doesn't exist
@@ -201,15 +201,15 @@ class TestBaseBusinessDocumentImport(TransactionCase):
             'unece_categ_code': 'S',
             }
         res = bdio._match_tax(tax_dict, [], type_tax_use='purchase')
-        self.assertEquals(res, de_tax_21)
+        self.assertEqual(res, de_tax_21)
         tax_dict.pop('unece_categ_code')
         res = bdio._match_tax(tax_dict, [], type_tax_use='purchase')
-        self.assertEquals(res, de_tax_21)
+        self.assertEqual(res, de_tax_21)
         res = bdio._match_tax(
             tax_dict, [], type_tax_use='purchase', price_include=True)
-        self.assertEquals(res, de_tax_21_ttc)
+        self.assertEqual(res, de_tax_21_ttc)
         res = bdio._match_taxes([tax_dict], [], type_tax_use='purchase')
-        self.assertEquals(res, de_tax_21)
+        self.assertEqual(res, de_tax_21)
 
     def test_match_account_exact(self):
         bdio = self.env['business.document.import']
@@ -221,7 +221,7 @@ class TestBaseBusinessDocumentImport(TransactionCase):
             'parent_id': self.test_root_account.id,
             })
         res = bdio._match_account({'code': '898999'}, [])
-        self.assertEquals(acc, res)
+        self.assertEqual(acc, res)
 
     def test_match_account_bigger_in(self):
         bdio = self.env['business.document.import']
@@ -233,7 +233,7 @@ class TestBaseBusinessDocumentImport(TransactionCase):
             'parent_id': self.test_root_account.id,
             })
         res = bdio._match_account({'code': '89899900'}, [])
-        self.assertEquals(acc, res)
+        self.assertEqual(acc, res)
 
     def test_match_account_smaller_in(self):
         bdio = self.env['business.document.import']
@@ -246,5 +246,5 @@ class TestBaseBusinessDocumentImport(TransactionCase):
             })
         chatter = []
         res = bdio._match_account({'code': '898999'}, chatter)
-        self.assertEquals(acc, res)
-        self.assertEquals(len(chatter), 1)
+        self.assertEqual(acc, res)
+        self.assertEqual(len(chatter), 1)

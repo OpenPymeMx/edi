@@ -6,7 +6,7 @@ from openerp import models, api, tools, _
 from openerp.exceptions import Warning as UserError
 from openerp.tools import float_is_zero, float_round
 from lxml import etree
-from StringIO import StringIO
+from io import StringIO
 from tempfile import NamedTemporaryFile
 import mimetypes
 import logging
@@ -124,7 +124,7 @@ class BaseUbl(models.AbstractModel):
         if id_dict:
             party_identification = etree.SubElement(
                 parent_node, ns['cac'] + 'PartyIdentification')
-            for scheme_name, party_id_text in id_dict.iteritems():
+            for scheme_name, party_id_text in id_dict.items():
                 party_identification_id = etree.SubElement(
                     party_identification, ns['cbc'] + 'ID',
                     schemeName=scheme_name)
@@ -496,7 +496,7 @@ class BaseUbl(models.AbstractModel):
         try:
             t = etree.parse(StringIO(xml_string))
             official_schema.assertValid(t)
-        except Exception, e:
+        except Exception as e:
             # if the validation of the XSD fails, we arrive here
             logger = logging.getLogger(__name__)
             logger.warning(
@@ -666,7 +666,7 @@ class BaseUbl(models.AbstractModel):
                     xmlfiles[embeddedfile] = embeddedfiles[i+1]
                 i += 1
             logger.debug('xmlfiles=%s', xmlfiles)
-            for filename, xml_file_dict_obj in xmlfiles.iteritems():
+            for filename, xml_file_dict_obj in xmlfiles.items():
                 try:
                     xml_file_dict = xml_file_dict_obj.getObject()
                     logger.debug('xml_file_dict=%s', xml_file_dict)
@@ -680,5 +680,5 @@ class BaseUbl(models.AbstractModel):
                     continue
         except:
             pass
-        logger.info('Valid XML files found in PDF: %s', res.keys())
+        logger.info('Valid XML files found in PDF: %s', list(res.keys()))
         return res

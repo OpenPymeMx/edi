@@ -40,7 +40,7 @@ class TestUblOrderImport(TransactionCase):
                     'sale_order_import_ubl.delivery_gentofte_kommune'),
                 },
             }
-        for filename, res in tests.iteritems():
+        for filename, res in tests.items():
             f = file_open(
                 'sale_order_import_ubl/tests/files/' + filename, 'rb')
             xml_file = f.read()

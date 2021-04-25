@@ -55,7 +55,7 @@ class AccountInvoiceImport(models.TransientModel):
         modules'''
         bdio = self.env['business.document.import']
         xml_files_dict = bdio.get_xml_files_from_pdf(file_data)
-        for xml_filename, xml_root in xml_files_dict.iteritems():
+        for xml_filename, xml_root in xml_files_dict.items():
             logger.info('Trying to parse XML file %s', xml_filename)
             try:
                 parsed_inv = self.parse_xml_invoice(xml_root)
@@ -474,7 +474,7 @@ class AccountInvoiceImport(models.TransientModel):
                 })
         compare_res = self.env['business.document.import'].compare_lines(
             existing_lines, parsed_inv['lines'], chatter, seller=seller)
-        for eline, cdict in compare_res['to_update'].iteritems():
+        for eline, cdict in compare_res['to_update'].items():
             write_vals = {}
             if cdict.get('qty'):
                 chatter.append(_(

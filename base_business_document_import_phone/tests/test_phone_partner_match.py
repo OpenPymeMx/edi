@@ -22,10 +22,10 @@ class TestPhonePartnerMatch(TransactionCase):
             'phone': '01.41.98.12.42',
             }
         res = bdoo._match_partner(partner_dict, [], partner_type='supplier')
-        self.assertEquals(res, partner)
+        self.assertEqual(res, partner)
         partner_dict = {
             'country_code': 'FR',
             'fax': '(0)1-41-98-12-43',
             }
         res = bdoo._match_partner(partner_dict, [], partner_type='supplier')
-        self.assertEquals(res, partner)
+        self.assertEqual(res, partner)

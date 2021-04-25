@@ -5,7 +5,7 @@
 from openerp.tests.common import TransactionCase
 import PyPDF2
 from lxml import etree
-from StringIO import StringIO
+from io import StringIO
 
 
 class TestZUGFeRDInvoice(TransactionCase):
@@ -26,7 +26,7 @@ class TestZUGFeRDInvoice(TransactionCase):
         pdf = PyPDF2.PdfFileReader(fd)
         pdf_root = pdf.trailer['/Root']
         embeddedfile = pdf_root['/Names']['/EmbeddedFiles']['/Names']
-        self.assertEquals(embeddedfile[0], 'ZUGFeRD-invoice.xml')
+        self.assertEqual(embeddedfile[0], 'ZUGFeRD-invoice.xml')
         zugferd_file_dict_obj = embeddedfile[1]
         zugferd_file_dict = zugferd_file_dict_obj.getObject()
         xml_string = zugferd_file_dict['/EF']['/F'].getData()

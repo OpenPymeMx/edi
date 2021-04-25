@@ -134,7 +134,7 @@ class TestZUGFeRD(TransactionCase):
         # in order to import ZUGFeRD_1p0_EXTENDED_Kostenrechnung.pdf
         price_precision = self.env.ref('product.decimal_price')
         price_precision.digits = 4
-        for (zugferd_file, res_dict) in zugferd_sample_files.iteritems():
+        for (zugferd_file, res_dict) in zugferd_sample_files.items():
             f = file_open(
                 'account_invoice_import_zugferd/tests/files/' +
                 zugferd_file, 'rb')

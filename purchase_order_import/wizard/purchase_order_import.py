@@ -51,7 +51,7 @@ class PurchaseOrderImport(models.TransientModel):
         if not xml_files_dict:
             raise UserError(_(
                 'There are no embedded XML file in this PDF file.'))
-        for xml_filename, xml_root in xml_files_dict.iteritems():
+        for xml_filename, xml_root in xml_files_dict.items():
             logger.info('Trying to parse XML file %s', xml_filename)
             try:
                 parsed_quote = self.parse_xml_quote(xml_root)
@@ -167,7 +167,7 @@ class PurchaseOrderImport(models.TransientModel):
             seller=order.partner_id.commercial_partner_id)
 
         update_option = self.update_option
-        for oline, cdict in compare_res['to_update'].iteritems():
+        for oline, cdict in compare_res['to_update'].items():
             write_vals = {}
             if cdict.get('price_unit'):
                 chatter.append(_(
